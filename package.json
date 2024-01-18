@@ -1,0 +1,14 @@
+{
+  "name": "api-artha",
+  "version": "0.1.0",
+  "repository": "https://github.com/bhaktibuana/backend-artha.git",
+  "author": "bhaktibuana <bhaktibuana19@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "go run .",
+    "build": "rm -rf ./dist && mkdir ./dist && go build -o ./dist/api-artha",
+    "build:linux:amd64": "rm -rf ./dist && mkdir ./dist && GOOS=linux GOARCH=amd64 go build -o ./dist/api-artha",
+    "start": "./dist/api-artha"
+  }
+}
