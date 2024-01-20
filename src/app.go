@@ -1,11 +1,16 @@
 package app
 
 import (
+	"api-artha/src/models"
 	"api-artha/src/routers"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
+
+func DBConnection() {
+	models.ConnectDatabase()
+}
 
 func Middlewares(app *gin.Engine) {
 	// Middleware to set the trusted headers (trust proxy)
