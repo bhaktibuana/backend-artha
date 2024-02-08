@@ -42,4 +42,5 @@ func Index(router *gin.Engine) {
 		url := fmt.Sprintf("%s", baseUrl)
 		helpers.Response("Artha API Service", http.StatusOK, context, map[string]interface{}{"url": url})
 	})
+
 }

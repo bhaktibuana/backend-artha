@@ -1,10 +1,14 @@
 package appRouter
 
-import "github.com/gin-gonic/gin"
+import (
+	authRouter "api-artha/src/routers/auth"
+
+	"github.com/gin-gonic/gin"
+)
 
 func AppRouters(path string, router *gin.Engine) {
-	router.Group(path)
+	apiGroup := router.Group(path)
 	{
-
+		authRouter.Routes("/auth", apiGroup)
 	}
 }
