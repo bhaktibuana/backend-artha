@@ -14,12 +14,12 @@ type LoginRequest struct {
 }
 
 func Login(context *gin.Context) *LoginRequest {
-	var loginRequest LoginRequest
+	var request LoginRequest
 
-	if err := context.ShouldBindJSON(&loginRequest); err != nil {
+	if err := context.ShouldBindJSON(&request); err != nil {
 		helpers.Response(err.Error(), http.StatusBadRequest, context, nil)
 		return nil
 	}
 
-	return &loginRequest
+	return &request
 }
