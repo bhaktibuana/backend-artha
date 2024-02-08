@@ -19,7 +19,7 @@ type SMailVerificationProps struct {
 func MailVerification(props SMailVerificationProps) *strings.Builder {
 	var bodyContent strings.Builder
 
-	templateFile := "./src/templates/mailVerification.html"
+	templateFile := "./src/templates/mailVerification/index.html"
 
 	tmplContent, err := os.ReadFile(templateFile)
 	if err != nil {
