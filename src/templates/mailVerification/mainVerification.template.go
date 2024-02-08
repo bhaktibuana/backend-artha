@@ -7,7 +7,16 @@ import (
 	"text/template"
 )
 
-func MailVerification(templateProps interface{}) *strings.Builder {
+type SMailVerificationProps struct {
+	Name       string
+	LoginUrl   string
+	Username   string
+	Email      string
+	ActionUrl  string
+	AppLogoUrl string
+}
+
+func MailVerification(props SMailVerificationProps) *strings.Builder {
 	var bodyContent strings.Builder
 
 	templateFile := "./src/templates/mailVerification.html"
@@ -24,7 +33,7 @@ func MailVerification(templateProps interface{}) *strings.Builder {
 		return nil
 	}
 
-	if err := tmpl.Execute(&bodyContent, templateProps); err != nil {
+	if err := tmpl.Execute(&bodyContent, props); err != nil {
 		return nil
 	}
 
