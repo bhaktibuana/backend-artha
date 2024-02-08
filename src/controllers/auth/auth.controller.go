@@ -11,15 +11,29 @@ import (
 )
 
 func Login(context *gin.Context) {
-	loginRequest := authRequest.Login(context)
-	if loginRequest == nil {
+	request := authRequest.Login(context)
+	if request == nil {
 		return
 	}
 
-	user := authService.Login(context, loginRequest)
+	user := authService.Login(context, request)
 	if user == nil {
 		return
 	}
 
 	helpers.Response("Login success", http.StatusOK, context, authResult.Login(user))
+}
+
+func Register(context *gin.Context) {
+	request := authRequest.Register(context)
+	if request == nil {
+		return
+	}
+
+	user := authService.Register(context, request)
+	if user == nil {
+		return
+	}
+
+	helpers.Response("Register success", http.StatusCreated, context, authResult.Register(user))
 }

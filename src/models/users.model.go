@@ -28,6 +28,10 @@ type Users struct {
 	DeletedAt sql.NullTime   `gorm:"type:datetime" json:"deleted_at"`
 }
 
+const USER_STATUS_VERIFIED = "verified"
+const USER_STATUS_UNVERIFIED = "unverified"
+const USER_STATUS_DELETED = "deleted"
+
 func SeedUsers(db *gorm.DB) {
 	var count int64
 	db.Model(&Users{}).Count(&count)
