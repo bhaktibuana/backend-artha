@@ -1,13 +1,16 @@
 package authService
 
 import (
+	"api-artha/src/configs"
 	"api-artha/src/helpers"
 	"api-artha/src/models"
 	authRequest "api-artha/src/requests/auth"
+	templates "api-artha/src/templates/mailVerification"
 	"database/sql"
 	"net/http"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -46,7 +49,7 @@ func Login(context *gin.Context, request *authRequest.LoginRequest) *models.User
 func Register(context *gin.Context, request *authRequest.RegisterRequest) *models.Users {
 	var user models.Users
 	var role models.Roles
-	var username, tagLine string
+	var username, tagLine, accountId string
 
 	if !request.Encrypted {
 		request.Password = helpers.HashPassword(request.Password)
@@ -64,7 +67,7 @@ func Register(context *gin.Context, request *authRequest.RegisterRequest) *model
 	}
 
 	for true {
-		username, tagLine, _ = helpers.GenerateRandomAccountId()
+		username, tagLine, accountId = helpers.GenerateRandomAccountId()
 
 		if err := models.DB.
 			First(&user, "username = ? AND tag_line = ?", username, tagLine).Error; err != nil {
@@ -93,6 +96,25 @@ func Register(context *gin.Context, request *authRequest.RegisterRequest) *model
 		helpers.Response("Register failed", http.StatusBadRequest, context, nil)
 		return nil
 	}
+
+	claims := jwt.MapClaims{
+		"id": user.Id,
+	}
+
+	token, _ := helpers.GenerateJWT(claims, 0)
+
+	recipient := helpers.SRecipient{To: []string{user.Email}}
+
+	template := templates.MailVerification(templates.SMailVerificationProps{
+		Name:       user.Name,
+		Username:   accountId,
+		Email:      user.Email,
+		AppLogoUrl: configs.AppConfig().BaseUrl + "/artha-logo.png",
+		LoginUrl:   configs.ClientConfig().ArthaUrl + "/login",
+		ActionUrl:  configs.ClientConfig().ArthaUrl + "/verifyAccount?token=" + token,
+	})
+
+	helpers.SendMail(recipient, "Welcome to Artha", template)
 
 	return &user
 }
