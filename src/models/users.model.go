@@ -53,13 +53,13 @@ func SeedUsers(db *gorm.DB) {
 				TagLine:   "00000",
 				Email:     "admin@artha.bhaktibuana.com",
 				Password:  helpers.HashPassword("@rthA1234567890"),
-				BirthDate: sql.NullTime{time.Time{}, false},
+				BirthDate: sql.NullTime{Time: time.Time{}, Valid: false},
 				GenderId:  sql.NullInt64{Int64: 0, Valid: false},
 				RoleId:    role.Id,
 				Status:    "verified",
 				CreatedAt: time.Now(),
-				UpdatedAt: sql.NullTime{time.Time{}, false},
-				DeletedAt: sql.NullTime{time.Time{}, false},
+				UpdatedAt: sql.NullTime{Time: time.Time{}, Valid: false},
+				DeletedAt: sql.NullTime{Time: time.Time{}, Valid: false},
 			},
 		}
 
