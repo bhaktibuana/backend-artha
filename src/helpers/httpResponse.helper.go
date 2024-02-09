@@ -15,5 +15,9 @@ func Response(message string, httpStatus int, context *gin.Context, data interfa
 		Data:    data,
 	}
 
-	context.JSON(httpStatus, response)
+	if response.Status == true {
+		context.JSON(httpStatus, response)
+	} else {
+		context.AbortWithStatusJSON(httpStatus, response)
+	}
 }
