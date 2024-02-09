@@ -118,3 +118,20 @@ func Register(context *gin.Context, request *authRequest.RegisterRequest) *model
 
 	return &user
 }
+
+func Me(context *gin.Context, id string) *models.Users {
+	var user models.Users
+
+	if err := models.DB.Preload("Role").First(&user, id).Error; err != nil {
+		switch err {
+		case gorm.ErrRecordNotFound:
+			helpers.Response("Data not found", http.StatusNotFound, context, nil)
+			return nil
+		default:
+			helpers.Response(err.Error(), http.StatusInternalServerError, context, nil)
+			return nil
+		}
+	}
+
+	return &user
+}

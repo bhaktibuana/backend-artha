@@ -11,5 +11,6 @@ func Routes(basePath string, router *gin.RouterGroup) {
 	{
 		authGroup.POST("/login", authController.Login)
 		authGroup.POST("/register", authController.Register)
+		authGroup.GET("/:id", authController.Me)
 	}
 }
