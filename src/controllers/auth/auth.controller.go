@@ -37,3 +37,17 @@ func Register(context *gin.Context) {
 
 	helpers.Response("Register success", http.StatusCreated, context, authResult.Register(user))
 }
+
+func Me(context *gin.Context) {
+	id := authRequest.Me(context)
+	if id == nil {
+		return
+	}
+
+	user := authService.Me(context, *id)
+	if user == nil {
+		return
+	}
+
+	helpers.Response("Request successful", http.StatusOK, context, authResult.Me(user))
+}
