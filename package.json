@@ -7,8 +7,8 @@
   "private": true,
   "scripts": {
     "dev": "go run .",
-    "build": "rm -rf ./dist/api-artha && go build -o ./dist/api-artha",
-    "build:linux:amd64": "rm -rf ./dist/api-artha && GOOS=linux GOARCH=amd64 go build -o ./dist/api-artha",
+    "build": "rm -rf ./dist/api-artha && ./build.sh && go build -o ./dist/api-artha",
+    "build:linux:amd64": "rm -rf ./dist/api-artha && ./build.sh && GOOS=linux GOARCH=amd64 go build -o ./dist/api-artha",
     "start": "./dist/api-artha"
   }
 }
