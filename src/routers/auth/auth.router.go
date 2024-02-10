@@ -10,5 +10,7 @@ func Routes(basePath string, router *gin.RouterGroup) {
 	authGroup := router.Group(basePath)
 	{
 		authGroup.POST("/login", authController.Login)
+		authGroup.POST("/register", authController.Register)
+		authGroup.GET("/:id", authController.Me)
 	}
 }
