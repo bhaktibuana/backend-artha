@@ -27,7 +27,13 @@ func Middlewares(app *gin.Engine) {
 		context.Next()
 	})
 
-	app.Use(cors.Default())
+	app.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowCredentials: true,
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+	}))
+
 }
 
 func Routes(app *gin.Engine) {
