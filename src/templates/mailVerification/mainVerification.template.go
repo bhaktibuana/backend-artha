@@ -1,6 +1,7 @@
 package templates
 
 import (
+	"api-artha/src/configs"
 	"fmt"
 	"os"
 	"strings"
@@ -18,8 +19,13 @@ type SMailVerificationProps struct {
 
 func MailVerification(props SMailVerificationProps) *strings.Builder {
 	var bodyContent strings.Builder
+	var templateFile string
 
-	templateFile := "./src/templates/mailVerification/index.html"
+	if configs.AppConfig().GinMode == "debug" {
+		templateFile = "./src/templates/mailVerification/index.html"
+	} else {
+		templateFile = "./assets/templates/mailVerification/index.html"
+	}
 
 	tmplContent, err := os.ReadFile(templateFile)
 	if err != nil {
