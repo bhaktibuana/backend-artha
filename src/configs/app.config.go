@@ -9,6 +9,7 @@ type SAppConfig struct {
 	GinMode   string
 	BaseUrl   string
 	JwtSecret string
+	SmtpUrl   string
 }
 
 func AppConfig() SAppConfig {
@@ -17,5 +18,6 @@ func AppConfig() SAppConfig {
 		GinMode:   os.Getenv("GIN_MODE"),
 		BaseUrl:   os.Getenv("BASE_URL"),
 		JwtSecret: os.Getenv("JWT_SECRET_KEY"),
+		SmtpUrl:   os.Getenv("ARTHA_SMTP_URL"),
 	}
 }
