@@ -1,11 +1,11 @@
 package authService
 
 import (
+	"api-artha/src/apis"
 	"api-artha/src/configs"
 	"api-artha/src/helpers"
 	"api-artha/src/models"
 	authRequest "api-artha/src/requests/auth"
-	templates "api-artha/src/templates/mailVerification"
 	"database/sql"
 	"net/http"
 	"time"
@@ -66,7 +66,7 @@ func Register(context *gin.Context, request *authRequest.RegisterRequest) *model
 		}
 	}
 
-	for true {
+	for {
 		username, tagLine, accountId = helpers.GenerateRandomAccountId()
 
 		if err := models.DB.
@@ -103,18 +103,16 @@ func Register(context *gin.Context, request *authRequest.RegisterRequest) *model
 
 	token, _ := helpers.GenerateJWT(claims, 0)
 
-	recipient := helpers.SRecipient{To: []string{user.Email}}
+	payload := map[string]string{
+		"name":         user.Name,
+		"username":     accountId,
+		"email":        user.Email,
+		"app_logo_url": configs.AppConfig().BaseUrl + "/artha-logo.png",
+		"login_url":    configs.ClientConfig().ArthaUrl + "/login",
+		"action_url":   configs.ClientConfig().ArthaUrl + "/verifyAccount?token=" + token,
+	}
 
-	template := templates.MailVerification(templates.SMailVerificationProps{
-		Name:       user.Name,
-		Username:   accountId,
-		Email:      user.Email,
-		AppLogoUrl: configs.AppConfig().BaseUrl + "/artha-logo.png",
-		LoginUrl:   configs.ClientConfig().ArthaUrl + "/login",
-		ActionUrl:  configs.ClientConfig().ArthaUrl + "/verifyAccount?token=" + token,
-	})
-
-	helpers.SendMail(recipient, "Welcome to Artha", template)
+	apis.APIArthaSMTP().MailVerification(payload)
 
 	return &user
 }
